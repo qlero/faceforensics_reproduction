@@ -14,7 +14,7 @@ import os
 import torch
 import torch.nn as nn
 
-from .models import model_selection
+from network.models import model_selection
 from os.path import join
 from PIL import Image as pil_image
 from torchvision import transforms
@@ -31,7 +31,7 @@ for s in ["train", "val", "test"]:
 
 # Function declarations
 
-def get_bounding_box(face, width, height, scale=1.3, min_size=None):
+def get_bounding_box(face, width, height, scale=1.3, minsize=None):
     """
     Generates a quadratic bounding box using the dlib library.
     --- 
@@ -46,9 +46,8 @@ def get_bounding_box(face, width, height, scale=1.3, min_size=None):
         size_bb : length of sides of the square b-box
     """
     # Computes the size of the bounding box
-    size_bb = int(max(
-            face.right()-face.left,face.bottom()-face.top()*scale
-            ))
+    size_bb = max(face.right()-face.left(),face.bottom()-face.top())
+    size_bb = int(size_bb*scale)
     if minsize and size_bb < minsize:
         size_bb = minsize
     # Computes the bounding box's top-left corner
@@ -98,7 +97,8 @@ def predict(image, model, activation=nn.Softmax(dim=1), cuda=True):
     # Preprocesses the input image
     prep_image = preprocess_image(image, cuda)
     # Predicts
-    output = activation(model(prep_image))
+    output = model(prep_image)
+    output = activation(output)
     # Casts to desired shape
     _, prediction = torch.max(output, 1)
     prediction = float(prediction.cpu().numpy())
@@ -106,24 +106,25 @@ def predict(image, model, activation=nn.Softmax(dim=1), cuda=True):
 
 def predict_video(
         video_path, model_path, output_path,
-        model_name = "xception",
+        model_name = "xception", model_as_dict = True,
         start_frame=0, end_frame=None, cuda=True
         ):
     """
     ---
     parameters:
-        video_path  : Path to the video to test
-        model_path  : Path to model to use
-        output_path : Path to the output folder to store results
-        model_name  : Name of the model to use (covered: xception,
-                      resnet50, resnet18)
-        start_frame : Indicates where to start in the video
-        end_frame   : Indicates where to stop in the video
-        cuda        : Enables cuda (must be equivalent to model's)
+        video_path    : Path to the video to test
+        model_path    : Path to model to use
+        output_path   : Path to the output folder to store results
+        model_name    : Name of the model to use (covered: xception,
+                        resnet50, resnet18)
+        model_as_dict : States that the model to import is formatted
+                        as a state dictionary
+        start_frame   : Indicates where to start in the video
+        end_frame     : Indicates where to stop in the video
+        cuda          : Enables cuda (must be equivalent to model's)
     """
     print(f"Launching process on video: {video_path}")
     # Initiates some intermediary variables
-    video_fn = video_path.split('/')[-1].split('.')[0]+'.avi'
     os.makedirs(output_path, exist_ok=True)
     writer = None
     font_face = cv2.FONT_HERSHEY_SIMPLEX
@@ -131,24 +132,26 @@ def predict_video(
     font_scale = 1
     # Initiates a frame by frame reader object
     reader = cv2.VideoCapture(video_path)
+    video_fn = video_path.split('/')[-1].split('.')[0]+'.avi'
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     fps = reader.get(cv2.CAP_PROP_FPS)
+    num_frames = int(reader.get(cv2.CAP_PROP_FRAME_COUNT))
     # Initiates the dlib face detector
     face_detector = dlib.get_frontal_face_detector()
     # Loads a model
     model, *_ = model_selection(
             model_name=model_name, 
-            n_output_classes=2
+            num_classes=2
             )
     if model_path is not None:
         state_dictionary = torch.load(model_path)
-        model.load_state_dict(state_dictionary, False)
+        if model_as_dict:
+            model.load_state_dict(state_dictionary, False)
         print(f"Model found in {model_path}")
     else:
         print(f"Model not found, intializing random model")
     if cuda: model.cuda()
     # Initiates frame numbers to process the tested video
-    num_frames = int(reader.get(cv2.CAP_PROP_FRAME_COUNT))
     frame_number = 0
     assert start_frame < num_frames - 1
     end_frame = end_frame if end_frame else num_frames
@@ -158,7 +161,7 @@ def predict_video(
     # PERFORMS THE READER LOOP #
     # OVER THE VIDEO FRAMES    #
     ############################
-    wile reader.isOpened():
+    while reader.isOpened():
         # Retrieves the next frame of the video
         pbar.update(1)
         frame_number += 1
@@ -177,7 +180,7 @@ def predict_video(
                     (height, width)[::-1])
         # Performs the face detection with dlib
         grayscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        faces = face_detector(gray, 1)
+        faces = face_detector(grayscale_image, 1)
         if len(faces):
             # Retrieves the first/largest face
             face = faces[0]
@@ -188,7 +191,7 @@ def predict_video(
             # model prediction #
             # on cropped face  #
             ####################
-            prediction, output = predict_with_model(
+            prediction, output = predict(
                     cropped_face, model, cuda=cuda
                     )
             ####################
