@@ -31,7 +31,6 @@ if __name__ == "__main__":
     for video in videos:
         dfv.predict_video(
                 video, args.model_path, args.output_path,
-                model_name = "xception", model_as_dict = False,
                 start_frame = 0, end_frame = None,
                 cuda = True
                 ) 
