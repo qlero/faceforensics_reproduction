@@ -2,6 +2,11 @@
 *.p
 *.pth
 
+# download videos
+download.py
+manipulated_sequences/
+original_sequences/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
