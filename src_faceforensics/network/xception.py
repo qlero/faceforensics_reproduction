@@ -1,8 +1,8 @@
 """
     ---- Overview ----
-    Implements the functions necessary to run an xception or 
-    resnet pre-trained binary classification model to evaluates 
-    a folder of video files (formatted as .mp4).
+    Implements the classes and functions necessary to run 
+    an xception pre-trained binary classification model to 
+    evaluates a folder of video files (formatted as .mp4).
     Code adapted by A. Rossler from Francois Chollet.
     ------------------
 """

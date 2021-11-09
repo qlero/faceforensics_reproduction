@@ -106,7 +106,6 @@ def predict(image, model, activation=nn.Softmax(dim=1), cuda=True):
 
 def predict_video(
         video_path, model_path, output_path,
-        model_name = "xception", model_as_dict = True,
         start_frame=0, end_frame=None, cuda=True
         ):
     """
@@ -115,10 +114,6 @@ def predict_video(
         video_path    : Path to the video to test
         model_path    : Path to model to use
         output_path   : Path to the output folder to store results
-        model_name    : Name of the model to use (covered: xception,
-                        resnet50, resnet18)
-        model_as_dict : States that the model to import is formatted
-                        as a state dictionary
         start_frame   : Indicates where to start in the video
         end_frame     : Indicates where to stop in the video
         cuda          : Enables cuda (must be equivalent to model's)
@@ -140,13 +135,10 @@ def predict_video(
     face_detector = dlib.get_frontal_face_detector()
     # Loads a model
     model, *_ = model_selection(
-            model_name=model_name, 
             num_classes=2
             )
     if model_path is not None:
         state_dictionary = torch.load(model_path)
-        if model_as_dict:
-            model.load_state_dict(state_dictionary, False)
         print(f"Model found in {model_path}")
     else:
         print(f"Model not found, intializing random model")
