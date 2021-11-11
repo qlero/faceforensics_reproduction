@@ -127,8 +127,8 @@ def pre_process_videos(compression="c40"):
     """
     # retrieves all the videos existing in the tree structure
     # under video_path
-    fake_types = [ # add FaceSwap back later (bug happened when running DFD
-            "DeepFakeDetection", "Deepfakes",
+    fake_types = [ # add FaceSwap and DeepFakeDetection back later (bug happened when running DFD
+            "Deepfakes",
             "NeuralTextures", "Face2Face", "FaceShifter"
             ]
     real_types = ["youtube", "actors"]
@@ -145,12 +145,13 @@ def pre_process_videos(compression="c40"):
             os.mkdir(image_path)
             video_list = os.listdir(folder+"videos/")
             for video in video_list:
-                video_path = folder+"videos/"
-                video_path = os.path.join(
-                        video_path,
-                        video
-                        )
-                convert_video2image(video_path, image_path)
+                if video != "README.md":
+                    video_path = folder+"videos/"
+                    video_path = os.path.join(
+                            video_path,
+                            video
+                            )
+                    convert_video2image(video_path, image_path)
 
 
 if __name__ == "__main__":

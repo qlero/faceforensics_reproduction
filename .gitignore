@@ -12,7 +12,7 @@ download.py
 *.png
 !src_presentation/images/*.png
 *.jpg
-!src_presentation/images/*.png
+!src_presentation/images/*.jpg
 *.avi
 
 # Byte-compiled / optimized / DLL files
