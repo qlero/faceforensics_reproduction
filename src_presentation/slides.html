@@ -92,12 +92,12 @@ This process usually leaves artifacts, which detection systems might look for.</
 
 <small>
 
+State-of-the-art in early 2019:
 - Graphics appr.: **NeuralTextures**, `Thies et al., 2019`
 - Learning appr.: **Face2Face**, `Thies et al., 2016`
 
 </small>
 
-<br/>
 <center><img src="images/synthesizing_obama.gif" width = "70%"/></center>
 <br/>
 .font50[
@@ -110,17 +110,19 @@ This process usually leaves artifacts, which detection systems might look for.</
 
 <small>
 
+State-of-the-art in early 2019:
+
 - Graphics appr.: **FaceSwap**, `Kowalski, 2016`
-- Learning appr.: **DeepFakes**, `deepfakes, 2017` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Deep Fake Detection**, `Google, 2019` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**FaceShifter**, `Li et al., 2020`
+- Learning appr.: **DeepFakes**, `deepfakes, 2017`
 
 </small>
 
 <center><img src="images/deepfake.gif" width = "40%"/></center>
-
+<br/><br/>
 .font50[
-**Note**: Deep Fake Detection was added in 2019 to the Github repository, FaceShifter in 2020.<br/>
-**Sources**: `Kowalski, FaceSwap, GitHub, 2015; Deepfakes Gr., deepfakes, GitHub, 2016; Li et al. FaceShifter: Towards High Fidelity And Occlusion Aware Face Swapping. CVPR. 2020`
+**Sources**: `Kowalski, FaceSwap. GitHub. 2015; Deepfakes Gr., deepfakes. GitHub. 2016` 
 ]
+
 ---
 
 class: center, middle, title-slide
@@ -129,7 +131,7 @@ class: center, middle, title-slide
 
 ---
 
-# The author's Objectives
+# The Authors' Objectives
 
 <small>Beyond motivations, the authors set out to publish:
 
@@ -149,36 +151,53 @@ class: center, middle, title-slide
 
 # The FaceForensics++ Dataset
 
-<small><center>An order of magnitude larger than previous ones</center>
-<br/>
+<small><center>An order of magnitude larger than previous ones.</center>
 
-| Origin | <div style="width:250px">Number of videos</div> | <div style="width:250px">Available quality</div> |
-| -------------: | ----: | ----------: | 
-| raw YouTube    | 1,000 | raw, HQ, LQ |
-| Face2Face      | 1,000 | raw, HQ, LQ |
-| DeepFakes      | 1,000 | raw, HQ, LQ |
-| FaceSwap       | 1,000 | raw, HQ, LQ |
-| NeuralTextures | 1,000 | raw, HQ, LQ |
-| FaceShifter    | 1,000 | raw, HQ, LQ |
+| Source | <div style="width:200px"># of videos</div> | <div style="width:200px">Compression</div> |
+| ----------------: | ----: | ----------: | 
+| Original YouTube + actors | 1,000 + 360 | raw, HQ, LQ |
+| DeepFakes                 | 1,000 | raw, HQ, LQ |
+| Face2Face                 | 1,000 | raw, HQ, LQ |
+| FaceSwap                  | 1,000 | raw, HQ, LQ |
+| NeuralTextures            | 1,000 | raw, HQ, LQ |
+
 </small>
-
+<br/>
 .font50[
-**Note**: The original dataset (without FaceShifter) amounts to c. 1.8m images. HQ and LQ corresponds to levels of "constant rate quantization" compression, resp. 23 and 40.
+**Note**: The dataset amounts to c. 1.8m images. HQ and LQ corresponds to levels of "constant rate quantization" compression, resp. 23 and 40.
+]
+
+---
+
+# The FaceForensics++ Dataset
+
+.font70[
+Since the inception of the paper, the dataset was updated twice to include:
+
+| Source | <div style="width:180px"># of videos</div> | <div style="width:170px">Compression</div> | <div style="width:150px">Added Date</div> |
+| ----------------: | ----: | ----------: | ---: |
+| DeepFakeDetection | 3,000 | raw, HQ, LQ | late 2019 |
+| FaceShifter       | 1,000 | raw, HQ, LQ | 2020 |
+]
+<br/><br/>
+.font50[
+**Sources**: `Dufour et al. Deep Fake Detection Dataset. Google AI. 2019; Li et al. FaceShifter: Towards High Fidelity And Occlusion Aware Face Swapping. CVPR. 2020`
 ]
 
 ---
 
 # Problem Statement To Evaluate FF++
 
-<small>**Human observer baseline**:
+.font70[**Human observer baseline**:
 - 50:50 split between pristine and fake images
 - 60 images per observer with an viewing time limit up to 6 seconds
 
 **Problem statement for automated solution**: 
 - 720/140/140 video split for training, val. and test.
-- per-frame binary classification
+- per-frame binary classification, videos converted to images s.t.:
+]
 
-</small>
+<center><img src="images/split.png" width=90%/></center>
 
 ---
 
@@ -198,9 +217,44 @@ Introduced in 2017, Xception stands for "Extreme-Inception". It is a set of deep
 
 ---
 
+# The FaceForensics++ Benchmark
+
+.font70[
+The benchmark corresponds to **1,000 images** with unknown labels:
+- **single frame** from an **unknown video** 
+- Manipulated with **DeepFakes**, **Face2Face**, **FaceSwap**, or **NeuralTextures** 
+- With random **re-sizing** and **compression**
+
+The automated benchmark is a **website** allowing one submission (e.g. **.JSON file of label predictions**) submission **every 2 weeks**.
+]
+
+<center><img src="images/benchpics.jpg" width = "80%"/></center>
+
+---
+
 class: center, middle, title-slide
 
 # 🧱 Performance & Limitations
+
+---
+
+# Paper results
+
+<center>.font70[
+The lower the video quality, the lower the performance.
+<center><img src="images/results.png" width = "65%"/></center>
+]</center>
+
+---
+
+# Current Benchmark Leaderboard
+
+.font80[Key points:
+- The benchmark was not updated with the new data.
+- Performances have greatly increased in a few years.
+]
+
+<center><img src="images/benchmark.png" width = "100%"/></center>
 
 ---
 
