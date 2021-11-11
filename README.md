@@ -8,7 +8,7 @@ This repository also contains an overview presentation of the FaceForensics++ pa
 
 This repository was tested with **Python 3.8.8**. The repository versions used are stored in the ``requirements.txt`` file in the root.
 
-### Running the process
+### Testing a video, process
 
 1. Download the models at the link [here](http://kaldir.vc.in.tum.de/FaceForensics/models/faceforensics++_models.zip) and extracts the models ``full_c23.p``, ``full_c40.p`` and ``full_raw.p`` in the compressed folder ``faceforensics++_models/faceforensics++_models_subset/full/xception`` into the folder ``input_models``.
 
