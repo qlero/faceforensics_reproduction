@@ -6,6 +6,8 @@
 download.py
 manipulated_sequences/
 original_sequences/
+*.mp3
+*.avi
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
