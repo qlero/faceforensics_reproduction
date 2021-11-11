@@ -58,24 +58,50 @@ python convert_videos2images.py --compression <insert_compression_model>
 
 ```
 .
-├── input_models                  # Folder containing the FF++ pretrained models
-│   ├── full_c23.p                # Xception c23 model (NI)
-│   ├── full_c40.p                # Xception c40 model (NI)
-│   ├── full_raw.p                # Xception raw model (NI)
-│   └── README.md
-├── input_videos                  # Folder containing the FF++ datasets
+├── README.md
+├── requirements.txt
+│
+├── input_models                 # Folder containing the FF++ pretrained models
+│   ├── README.md
+│   ├── full_c23.p               # Xception c23 model (NI)
+│   ├── full_c40.p               # Xception c40 model (NI)
+│   └── full_raw.p               # Xception raw model (NI)
+│
+├── input_videos                 # Folder containing the FF++ datasets
 │   ├── README.md 
-│   ├── convert_videos2images.py  # script to convert manip/orig videos into pics 
-│   ├── download.py               # script to download the FF++ dataset (NI) 
-│   ├── notMorgan.mp4             # example video
-│   ├── benchmark                 # Contains the 1000 FF++ benchmark pictures
-│   │   └── ...
-│   ├── manipulated_sequences     # Contains the manipulated sequences of the FF++ dataset
-│   │   └── ...
-│   └── original_sequences        # Contains the original sequences of the FF++ dataset
-│       └── ...
-├── output_videos                 #
-├── src_forensics                 #
-├── src_presentation              #
-└── src_report                    #
+│   ├── convert_videos2images.py # Script to convert manip/orig videos into pics 
+│   ├── download.py              # Script to download the FF++ dataset (NI) 
+│   ├── notMorgan.mp4            # Example video
+│   ├── benchmark                # Contains the 1000 FF++ benchmark pictures
+│   │   └── ... 	         # (NI: videos and images)
+│   ├── manipulated_sequences    # Contains the manipulated sequences of the FF++ dataset
+│   │   └── ... 		 # (NI: videos and images)
+│   └── original_sequences       # Contains the original sequences of the FF++ dataset
+│       └── ... 		 # (NI: videos and images)
+│
+├── output_videos                # Folder where to put network-processed videos
+│   ├── README.md 
+│   └── recombine_audio_video.sh # Shell script to recombine input and output video w/ crossfade
+│
+├── src_forensics                # Source folder for all neural network code
+│   ├── README.md
+│   ├── detect_from_videos.py    # Reimplementation of FF+ test phase with Xception 
+│   ├── launch_detection.py      # Script call to streamline the use of detect_from_videos.py
+│   └── network                  # Folder where the Xception PyTorch model is declared
+│       ├── __init__.py 
+│       ├── models.py            # Pytorch methods for transfer model
+│       └── xception.py	         # Xception implementation for transfer model
+│
+├── src_presentation             # Source folder for the presentation
+│       ├── README.md
+│       ├── slides.html          # Slides to open in a web browser to visualize
+│       ├── css                  # CSS methods for the slides
+│       │   └── ...
+│       ├── images               # Images for the slides
+│       │   └── ...
+│       └── videos               # Videos for the slides
+│           └── ...
+│
+└── src_report                    # Source folder for my LaTeX notes
+    └── ...
 ```
