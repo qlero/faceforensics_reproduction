@@ -73,7 +73,9 @@ def convert_video2image(
     frame_number = 0
     assert start_frame < num_frames - 1
     end_frame = end_frame if end_frame else num_frames
-    frames_to_extract = sorted(random.sample(range(end_frame), 9))
+    # Computes which frames to extract (maximum of 9)
+    nb = min(9, num_frames) 
+    frames_to_extract = sorted(random.sample(range(end_frame), nb))
     last_frame = frames_to_extract[-1]
     ############################
     # PERFORMS THE READER LOOP #
@@ -125,8 +127,8 @@ def pre_process_videos(compression="c40"):
     """
     # retrieves all the videos existing in the tree structure
     # under video_path
-    fake_types = [
-            "FaceSwap", "DeepFakeDetection", "Deepfakes",
+    fake_types = [ # add FaceSwap back later (bug happened when running DFD
+            "DeepFakeDetection", "Deepfakes",
             "NeuralTextures", "Face2Face", "FaceShifter"
             ]
     real_types = ["youtube", "actors"]

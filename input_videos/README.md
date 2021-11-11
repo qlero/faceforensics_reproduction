@@ -8,7 +8,7 @@ You will not find the download script for the original dataset in this repositor
 
 ### convert_videos2images.py script
 
-This script converts all the videos downloaded via the ``download.py`` script into series of images cropped at the face bounding box.
+This script converts all the videos downloaded via the ``download.py`` script into series of images cropped at the face bounding box. Refer back to the root ``README.md`` for the description of the process.
 
 ### Note on downloading all videos
 

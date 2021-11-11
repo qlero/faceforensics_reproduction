@@ -4,9 +4,15 @@
 
 # download videos
 download.py
-manipulated_sequences/
-original_sequences/
 *.mp3
+*.avi
+*.mp4
+!input_videos/*.mp4
+!src_presentation/videos/*.mp4
+*.png
+!src_presentation/images/*.png
+*.jpg
+!src_presentation/images/*.png
 *.avi
 
 # Byte-compiled / optimized / DLL files
