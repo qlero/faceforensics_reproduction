@@ -46,6 +46,12 @@ python download.py . -d all -c <insert_compression_model> -t videos --server <in
 python convert_videos2images.py --compression <insert_compression_model>
 ```
 
+3. Retrieves 80,000 images from those extracts and set them into a separate subfolder located in the folder ``input_videos``. This subfolder will be used as part of a PyTorch data loader. 
+
+``sh
+python create_data_folder.py --compression <insert_compression_model>
+``
+
 **Note**: This part takes a really long time depending as it is iterative video by video (c. 9,000 in total)
 
 ### Running a neural network
@@ -63,15 +69,17 @@ python convert_videos2images.py --compression <insert_compression_model>
 │
 ├── input_models                 # Folder containing the FF++ pretrained models
 │   ├── README.md
-│   ├── full_c23.p               # Xception c23 model (NI)
-│   ├── full_c40.p               # Xception c40 model (NI)
-│   └── full_raw.p               # Xception raw model (NI)
+│   ├── full_c23.p               # (NI) Xception c23 model 
+│   ├── full_c40.p               # (NI) Xception c40 model
+│   └── full_raw.p               # (NI) Xception raw model
 │
 ├── input_videos                 # Folder containing the FF++ datasets
 │   ├── README.md 
 │   ├── convert_videos2images.py # Script to convert manip/orig videos into pics 
-│   ├── download.py              # Script to download the FF++ dataset (NI) 
+│   ├── download.py              # (NI) Script to download the FF++ dataset
 │   ├── notMorgan.mp4            # Example video
+│   ├── dataloader_<compression> # (NI) Folder with a copy of image data for a Pytorch dataloader
+│   │   └── ... 	         
 │   ├── benchmark                # Contains the 1000 FF++ benchmark pictures
 │   │   └── ... 	         # (NI: videos and images)
 │   ├── manipulated_sequences    # Contains the manipulated sequences of the FF++ dataset

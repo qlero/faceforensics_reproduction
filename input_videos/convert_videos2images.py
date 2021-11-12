@@ -125,17 +125,17 @@ def pre_process_videos(compression="c40"):
     parameters:
         compression : compression level to be retrieved
     """
-    # retrieves all the videos existing in the tree structure
-    # under video_path
-    fake_types = [ # add FaceSwap and DeepFakeDetection back later (bug happened when running DFD
-            "Deepfakes",
+    fake_types = [
+            "Deepfakes", "FaceSwap", "DeepFakeDetection",
             "NeuralTextures", "Face2Face", "FaceShifter"
             ]
     real_types = ["youtube", "actors"]
     fake_path = lambda t, c: f"manipulated_sequences/{t}/{c}/"
     real_path = lambda t, c: f"original_sequences/{t}/{c}/"
     cases = [(fake_types, fake_path), (real_types, real_path)]
-    # Pre-process each video
+    # retrieves all the videos existing in the tree structure
+    # given a type of compression and retrieves a select few
+    # frames from each
     for case in cases:
         video_types = case[0]
         path_f = case[1]
