@@ -15,6 +15,9 @@ download.py
 !src_presentation/images/*.jpg
 *.avi
 *.csv
+*.pt
+runs/
+sampler/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
