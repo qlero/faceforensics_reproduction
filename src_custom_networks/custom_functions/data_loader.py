@@ -19,7 +19,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data import random_split, WeightedRandomSampler
 from torchvision.datasets import ImageFolder
 from torchvision.io import read_image
-from torchvision.transforms import ToTensor, Resize, Normalize, Compose
+from torchvision.transforms import ToTensor, Resize, Normalize, Compose, ToPILImage
 from torchvision.transforms import RandomRotation, RandomHorizontalFlip
 
 # Class declarations
@@ -129,8 +129,9 @@ def create_dataloader(
     dataloader = CustomImageDataset(
             labels_csv, target_folder, 
             transform=Compose([
-                ToTensor(),
+                ToPILImage(),
                 Resize(resize_to), 
+                ToTensor(),
                 Normalize(
                     mean=[0.485, 0.456, 0.406], 
                     std=[0.229, 0.224, 0.225]

@@ -93,8 +93,8 @@ This process usually leaves artifacts, which detection systems might look for.</
 <small>
 
 State-of-the-art in early 2019:
-- Graphics appr.: **NeuralTextures**, `Thies et al., 2019`
-- Learning appr.: **Face2Face**, `Thies et al., 2016`
+- Graphics appr.: **Face2Face**, `Thies et al., 2016`
+- Learning appr.: **NeuralTextures**, `Thies et al., 2019`
 
 </small>
 
@@ -104,6 +104,29 @@ State-of-the-art in early 2019:
 **Sources**: `Thies, J. et al. Face2Face: Real-Time Face Capture & Reenactment. IEEE. 2016; Thies, J. et al. Deffered Neural Rendering. ACM Trans. Graph. (TOG) 2019`
 ]
 
+---
+
+# Face2Face
+
+.font70[
+F2F is a **parametric** face model with six classes of parameters: 
+- Pose, shape, albedo, expression, illumination (269 parameters)
+The transfer relies on an iterative least squares to smooth the recomputed face.
+]
+<center><img src="images/face2face.png" width = "90%"/></center>
+.font50[
+**Note**: The mouth is not parametrized but pulled from a database created from the target video. The mouth is composed over the resulting transfer, and the interior of the mouth is completede with a kNN between the source and database.
+]
+
+---
+
+# Neural Textures
+
+Neural Textures is an **extension of Face2Face** to track and generate facial features. 
+<br/><br/>
+The learning approach revolves around using **Generative Adversarial Network** to compute the mouth area.
+<br/><br/>
+**Goal**: Reduces the computational complexity of relying on a database
 ---
 
 # Identity Manipulation
@@ -121,6 +144,36 @@ State-of-the-art in early 2019:
 <br/><br/>
 .font50[
 **Sources**: `Kowalski, FaceSwap. GitHub. 2015; Deepfakes Gr., deepfakes. GitHub. 2016` 
+]
+
+---
+
+# FaceSwap
+
+.font70[
+FaceSwap computes the **landmarks** of an input face (extracted from the input image) and **fit a 3D model to the landmarks**.
+<br/><br/>
+A facial 3D model (from an input facial image) is fitted then projected onto the target using a **Gauss-Newton method**. The method minimizes the differences between the projected shape and the detected landmarks. 
+<br/><br/>
+A smoothing step is then performed.
+]
+
+<center><img src="images/marek.png" width = "40%"/></center>
+
+---
+
+# DeepFakes
+
+.font70[
+DeepFakes relies an an **AutoEncoder** network to learn face feature maps. Two are used: one for the source and one of the target. 
+<br/>
+**The encoder of the source is combined with the decoder of the target**. The result is a reconstruction of the original data of the target with a face manipulated insertion.
+]
+
+<center><img src="images/deepAE.png" width = "80%"/></center>
+
+.font50[
+**Source**: ``Hui, J., How Deep Learning Fakes Videos and How to Detect It? Medium, 2018``
 ]
 
 ---
@@ -179,7 +232,7 @@ Since the inception of the paper, the dataset was updated twice to include:
 | DeepFakeDetection | 3,000 | raw, HQ, LQ | late 2019 |
 | FaceShifter       | 1,000 | raw, HQ, LQ | 2020 |
 ]
-<br/><br/>
+<br/><br/><br/>
 .font50[
 **Sources**: `Dufour et al. Deep Fake Detection Dataset. Google AI. 2019; Li et al. FaceShifter: Towards High Fidelity And Occlusion Aware Face Swapping. CVPR. 2020`
 ]
@@ -264,11 +317,72 @@ class: center, middle, title-slide
 
 ---
 
-# A Bit of Fun
+# New Generation Methods
 
-<center><video width="720" height="480" controls="controls">
+.font60[
+The split between expression and identity manipulation has been refined.
+
+| <div style="width:250px">Manipulation</div> | <div style="width:250px">Current Main Method(s)</div> | <div style="width:200px">Examples</div> | 
+| ---: | ---: | ---: |
+| Entire face synthesis | GAN | ProGAN, StyleGAN |
+| Identity Swap | AutoEncoder | Celeb-DF | 
+| Attribute Manipulation | GAN | STGAN, EigenGAN, PAGAN, StarGAN | 
+| Expression Swap | Parametric, GAN | Face2Face, NeuralTextures | 
+| Face Morphing | Parametric | FaceMorpher, WinMorph, FantaMorph |
+| Face De-Identification | GAN | Semi-AN | 
+]
+<br/>
+.font50[
+**Source**: `Tolosana et al. DeepFakes and Beyond: A Survey of Face Manipulation and Fake Detection. ArXiV. 2020`
+]
+
+---
+
+# New Detection Methods
+
+.font60[
+| <div style="width:250px">Manipulation</div> | <div style="width:300px">Current Main Method(s)</div> | <div style="width:200px">Database</div> | 
+| ---: | ---: | ---: |
+| Entire face synthesis | GAN/DL-pipeline Feature + SVM/CNN | DFDD, 100k-Faces, iFakeFaceDB |
+| Identity Swap | Feature-Extraction + SVM/CNN | FF++, DFDC, DeepfakeTIMIT | 
+| Attribute Manipulation | GAN/DL-pipeline Feature + CNN/SVM | DFDD, proprietary | 
+| Expression Swap | Feature-Extract./DL-pipeline F + CNN/AE | FF++ | 
+| Face Morphing | Feature-Extraction + Classifier | D-MAD, S-MAD  |
+]
+<br/><br/>
+.font50[
+**Source**: `Tolosana et al. DeepFakes and Beyond: A Survey of Face Manipulation and Fake Detection. ArXiV. 2020; Raja et al. Morphing ATtack Detection-Database. IEEE. 2021`
+]
+
+---
+
+# Further Sources On The Topic
+
+.font60[
+**Paper:**
+<center><img src="images/interesting.png" width = "80%"/></center>
+<br/>
+**Github repositories**:
+- StyleGAN, 2019, [https://github.com/NVlabs/stylegan](https://github.com/NVlabs/stylegan)
+- StarGANv2, 2020, [https://github.com/clovaai/stargan-v2](https://github.com/clovaai/stargan-v2)
+- STGAN, 2020, [https://github.com/csmliu/STGAN](https://github.com/csmliu/STGAN)
+- PAGAN, 2020, [https://github.com/LynnHo/PA-GAN-Tensorflow](https://github.com/LynnHo/PA-GAN-Tensorflow)
+- EigenGAN, ICCV 2021, [https://github.com/LynnHo/EigenGAN-Tensorflow](https://github.com/LynnHo/EigenGAN-Tensorflow)
+]
+---
+
+# To Wrap Up: A Bit of Fun
+
+<center><video width="600" height="400" controls="controls">
 <source src="videos/notMorganCrossfade.mp4" type="video/mp4">
 </video></center>
+
+<center>
+.font60[
+Find the FF++ code reimplementation and a ResNet on my github here:
+[https://github.com/qlero/faceforensics_reimplementation](https://github.com/qlero/faceforensics_reimplementation)
+]
+</center>
 
 .font50[
 **Source**: `de Jong, B., Schouwink, B., Deepfake Singularity. 2021.` <small>([link](https://www.youtube.com/watch?v=F4G6GNFz0O8))</small>
