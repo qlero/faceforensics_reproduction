@@ -21,7 +21,7 @@ The second relies on the ``retrieve_images_v2`` function and will retrieve the c
 Calling the script via the following will call the first version. 
 
 ```sh
-python create_data_folder.py --compression <compression_mode>
+python create_data_folder.py --compression <compression_mode> --retrieve <any_input>
 ```
 
 Adding an argument ``--retrieve`` followed by any letter will call the second version (the check is done on whether the argument is empty, i.e. ``None``).

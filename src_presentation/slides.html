@@ -53,9 +53,15 @@ class: center, middle, title-slide
 # The Paper's Motivation
 
 <br/>
+.font90[
+
+> To expand a previous 2018 paper (arXiv:1803.09179)
+
 > To test the realism of state-of-the-art image manipulation
 
 > To standardize the evaluation of detection methods
+
+]
 
 ---
 
@@ -231,8 +237,8 @@ Since the inception of the paper, the dataset was updated twice to include:
 | ----------------: | ----: | ----------: | ---: |
 | DeepFakeDetection | 3,000 | raw, HQ, LQ | late 2019 |
 | FaceShifter       | 1,000 | raw, HQ, LQ | 2020 |
-]
-<br/><br/><br/>
+
+DFD relies on different deepfake methods available online at the time of publication (NeurIPS 2019). Face Shifter is based on an auto-encoder.]<br/>
 .font50[
 **Sources**: `Dufour et al. Deep Fake Detection Dataset. Google AI. 2019; Li et al. FaceShifter: Towards High Fidelity And Occlusion Aware Face Swapping. CVPR. 2020`
 ]
@@ -274,7 +280,7 @@ Introduced in 2017, Xception stands for "Extreme-Inception". It is a set of deep
 
 .font70[
 The benchmark corresponds to **1,000 images** with unknown labels:
-- **single frame** from an **unknown video** 
+- **Single frame** from an **unknown video** 
 - Manipulated with **DeepFakes**, **Face2Face**, **FaceSwap**, or **NeuralTextures** 
 - With random **re-sizing** and **compression**
 
@@ -295,8 +301,15 @@ class: center, middle, title-slide
 
 <center>.font70[
 The lower the video quality, the lower the performance.
-<center><img src="images/results.png" width = "65%"/></center>
+<center><img src="images/results.png" width = "100%"/></center>
 ]</center>
+.font60[
+
+- XceptionNet results obtained via training on 270 images per video, testing on 100 images per video.
+
+- <u>Methods:</u> **Cozzolino**, steganographic features + CNN; **Bayar and Stamm**, CNN followed by three FC layers; **Rahmouni**, CNN with a focus on extracting features via global pooling; **MesoNet**, InceptionNet architecture
+
+]
 
 ---
 
@@ -311,7 +324,24 @@ The lower the video quality, the lower the performance.
 
 ---
 
+# Limitations
+
+.font60[
+
+*<center>"Early experiments with all methods showed that the target face had to be nearly front-facing to prevent the manipulation methods from failing or produce strong artifacts [...] a manual screening [was performed] to ensure a high-quality video selection and avoid face occlusions."</center>*
+
+- The dataset will have to be replaced or expanded with newer, better methods (no update since 2020)
+
+- The Benchmark has nearly been perfected and will likely need an update as well
+
+- The paper does not provide their training code to verify the Xception performance, the benchmark does not need to disclose the used architecture's code. The milieu is a bit opaque from an industry perspective.
+
+]
+
+---
+
 class: center, middle, title-slide
+
 
 # 🌐 Future Directions
 
@@ -369,6 +399,25 @@ The split between expression and identity manipulation has been refined.
 - PAGAN, 2020, [https://github.com/LynnHo/PA-GAN-Tensorflow](https://github.com/LynnHo/PA-GAN-Tensorflow)
 - EigenGAN, ICCV 2021, [https://github.com/LynnHo/EigenGAN-Tensorflow](https://github.com/LynnHo/EigenGAN-Tensorflow)
 ]
+
+---
+
+# Code Reimplementation
+
+.font60[
+A GitHub repository is available publicly with the following content:
+
+- FaceForensics++ code reimplementation (test step on videos foreign to the dataset)
+- ResNet50 implementation (achieves a validation accuracy of 89% after 10 epochs on a dataset subset)
+- ResNet50 with Scattering Transforms
+- Presentation slides (html+css code)
+- Suite of README.md and shell script to rework the paper from a to z
+
+> [https://github.com/qlero/faceforensics_reimplementation](https://github.com/qlero/faceforensics_reimplementation)
+
+
+]
+
 ---
 
 # To Wrap Up: A Bit of Fun
@@ -376,13 +425,6 @@ The split between expression and identity manipulation has been refined.
 <center><video width="600" height="400" controls="controls">
 <source src="videos/notMorganCrossfade.mp4" type="video/mp4">
 </video></center>
-
-<center>
-.font60[
-Find the FF++ code reimplementation and a ResNet on my github here:
-[https://github.com/qlero/faceforensics_reimplementation](https://github.com/qlero/faceforensics_reimplementation)
-]
-</center>
 
 .font50[
 **Source**: `de Jong, B., Schouwink, B., Deepfake Singularity. 2021.` <small>([link](https://www.youtube.com/watch?v=F4G6GNFz0O8))</small>

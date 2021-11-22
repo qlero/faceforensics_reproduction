@@ -5,6 +5,22 @@
     --------------------
 """
 
+# Library Imports
+
+import os
+import pandas as pd
+import torch
+import torchvision
+
+from collections import Counter
+from tqdm import tqdm
+
+from torch.nn import CrossEntropyLoss, Linear
+from torch.optim import Adam
+from torchvision.models import resnet50
+from torchvision.utils import make_grid
+from torch.utils.tensorboard import SummaryWriter
+
 # Config declaration
 
 cfg = {
@@ -25,22 +41,6 @@ cfg = {
     "lr": 1.5e-05,
     "seed": 0
 }
-
-# Library Imports
-
-import os
-import pandas as pd
-import torch
-import torchvision
-
-from collections import Counter
-from tqdm import tqdm
-
-from torch.nn import CrossEntropyLoss, Linear
-from torch.optim import Adam
-from torchvision.models import resnet50
-from torchvision.utils import make_grid
-from torch.utils.tensorboard import SummaryWriter
 
 # Class Declarations
 

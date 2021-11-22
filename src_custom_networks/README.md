@@ -11,6 +11,8 @@ The networks available are a Scattering Resnet and a Resnet that can respectivel
 
 #### Script without Weighted Random Sampling
 
+This requires to run the `create_data_folder.py` script first in the `input_videos` folder.
+
 ```sh
 python <model_file.py> \
 	--batch_size 64 \
@@ -24,6 +26,8 @@ python <model_file.py> \
 ```
 
 #### Script with Weighted Random Sampling
+
+This requires to run the `create_data_folder.py` script first in the `input_videos` folder, with the `--retrieve` keyword.
 
 ```sh
 python <model_file.py>.py \

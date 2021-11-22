@@ -6,19 +6,21 @@ This repository also contains an overview presentation of the FaceForensics++ pa
 
 ## Installation
 
-This repository was tested with **Python 3.8.8**. The repository versions used are stored in the ``requirements.txt`` file in the root.
+This repository was tested with **Python 3.8.8**. The repository versions used are stored in the ``requirements.txt`` file in the root folder of this repository.
 
 # Guides
 
 ## Testing a video
 
+*You can test a video for being a deepfake by running the code provided by the researcher, and updated in this repository, by following these steps*:
+
 1. Download the models at the link [here](http://kaldir.vc.in.tum.de/FaceForensics/models/faceforensics++_models.zip).
 
 2. Extracts the models ``full_c23.p``, ``full_c40.p`` and ``full_raw.p`` from the compressed folder ``faceforensics++_models/faceforensics++_models_subset/full/xception`` into the folder ``input_models``.
 
-3. Move any video to test (in format ``.mp4`` or ``.avi``) at the root of the ``input_videos`` folder (an 480p example taken from [Youtube](https://youtu.be/oxXpB9pSETo) is left there as an example). 
+3. Move any video to test (in format ``.mp4`` or ``.avi``) at the root of the ``input_videos`` folder (a 480p example taken from [Youtube](https://youtu.be/oxXpB9pSETo) is left there as an example). 
 
-4. Run the following code (updated with the target model to use):
+4. Run the following code (you have to modify the script with the target model to use):
 
 ```sh
 python src_faceforensics/launch_detection.py -i input_videos -m input_models/<model_file> -o output_videos
@@ -30,23 +32,23 @@ python src_faceforensics/launch_detection.py -i input_videos -m input_models/<mo
 
 Because of local limitations (GTX980ti), I decided to work with a subset of the dataset. 
 
-> **idea**: for each available video (whether pristine or fake, given the six available forgery methods), up to 9 random frames are extracted into a dataset of roughly 70,000 images, to be split between 50,000 training images, 10,000 validation images, and 10,000 test images.
+> **idea**: For each available video (whether pristine or fake, given the six available forgery methods), up to 9 random frames are extracted into a dataset of roughly 80,000 images (to be used for given splits between training and validation/testing).
 
 The process goes as follow:
 
-1. Download the FaceForensics++ dataset using the ``download.py`` script you can request from the team by following the process found [here](https://github.com/ondyari/FaceForensics/tree/master/dataset). Put the script in the folder ``input_videos``.
+1. Download the FaceForensics++ dataset using the ``download.py`` script (not included in this repository) that you can request from the FF++ team by following the process found [here](https://github.com/ondyari/FaceForensics/tree/master/dataset). Put the script in the folder ``input_videos`` and call the following script (c40 videos weight about 5Gb and at the time of the writing of this repository, the EU2 server was open):
 
 ```sh
 python download.py . -d all -c <insert_compression_model> -t videos --server <insert_server>
 ```
 
-2. Extracts random frames using the script ``convert_videos2images.py`` located in the folder ``input_videos``. The images are set in a folder ``images`` at the same file level as the videos they are extracted from.
+2. Extracts random frames using the script ``convert_videos2images.py`` located in the folder ``input_videos``. The images are set in a folder ``images`` at the same file level as the videos they are extracted from. 
 
 ```sh
 python convert_videos2images.py --compression <insert_compression_model>
 ```
 
-3. Retrieves 80,000 images from those extracts and set them into a separate subfolder located in the folder ``input_videos``. This subfolder will be used as part of a PyTorch data loader. 
+3. Retrieves the extracted images and set them into a separate subfolder located in the folder ``input_videos``. This subfolder will be used as part of a PyTorch data loader method. 
 
 ``sh
 python create_data_folder.py --compression <insert_compression_model>
@@ -56,7 +58,13 @@ python create_data_folder.py --compression <insert_compression_model>
 
 ### Running a neural network
 
-*To be added*
+To run either the ResNet50 or the ResNet50 with Scattering Transform, please refer to the `README.md` file at the root of the folder `src_custom_networks`. Running neural networks yields processes as such:
+
+![resnet](src_presentation/images/scriptRunResnet.png)
+
+![resnet](src_presentation/images/scriptRunScatNet.png)
+
+Current best result is achieved with the ResNet50 with an accuracy of 89% after 10 epochs using a resampling method to deal with the pristine/fake video 1-to-5 imbalance.
 
 # Folder structure
 
@@ -76,6 +84,7 @@ python create_data_folder.py --compression <insert_compression_model>
 ├── input_videos                 # Folder containing the FF++ datasets
 │   ├── README.md 
 │   ├── convert_videos2images.py # Script to convert manip/orig videos into pics 
+│   ├── create_data_folder.py    # Script retrieve a random selection of images to create a data loader 
 │   ├── download.py              # (NI) Script to download the FF++ dataset
 │   ├── notMorgan.mp4            # Example video
 │   ├── dataloader_<compression> # (NI) Folder with a copy of image data for a Pytorch dataloader
@@ -91,6 +100,16 @@ python create_data_folder.py --compression <insert_compression_model>
 │   ├── README.md 
 │   └── recombine_audio_video.sh # Shell script to recombine input and output video w/ crossfade
 │
+├── src_custom_networks          # Source folder for the custom implementation of networks
+│   ├── README.md
+│   ├── resnet.py                # Call script for a ResNet50 implementation 
+│   ├── scattering_resnet.py     # Call script for a ResNet50 implementation with scattering transform layers
+│   └── custom_functions         # Folder where the custom network implementation are stored
+│       ├── __init__.py 
+│       ├── data_loader.py       # Python methods to implement a Torch data loader
+│       ├── resnet.py            # Python methods to implement a Torch resnet50
+│       └── scattering_resnet.py # Python methods to implement a Torch resnet50 with Scattering transform layers
+││
 ├── src_forensics                # Source folder for all neural network code
 │   ├── README.md
 │   ├── detect_from_videos.py    # Reimplementation of FF+ test phase with Xception 

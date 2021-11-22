@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     # Checks for args
     if args.weighted_sampler:
-        if args.train_data_folder is None or args.train_label_csv is None:
+        if args.train_data_folder is None:
             raise ValueError("Image folder(s)/Label file(s) must be properly set")
     elif not args.weighted_sampler:
         if args.train_data_folder is None or args.train_label_csv is None \
@@ -120,9 +120,6 @@ if __name__ == "__main__":
             num_epochs = args.n_epochs,
             unfreeze_after=5
         )
-    # Performing inference
-    # loading the model architecture
-    model = torchvision.models.resnet50
 
 
 
