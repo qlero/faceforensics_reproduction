@@ -46,7 +46,7 @@ count: false
 
 class: center, middle, title-slide
 
-## Developing detection techniques has become cornerstone of the field of computer vision in recent years.
+## Developing detection techniques has become one of the cornerstones of the field of Computer Vision in recent years.
 
 ---
 
@@ -57,7 +57,7 @@ class: center, middle, title-slide
 
 > To expand a previous 2018 paper (arXiv:1803.09179)
 
-> To test the realism of state-of-the-art image manipulation
+> To test the efficacy of state-of-the-art image manipulation and detection
 
 > To standardize the evaluation of detection methods
 
@@ -83,14 +83,23 @@ New techniques, better computers enable facial digitization in two different app
 
 # An Overall Generic Process
 
-<small>The two approaches usually follow the same process:
+<small>The two approaches follow the same pipeline:
 
-1. Identify the face region, isolate it
+1. Identify the face region and isolate/extract it
 2. Modify the region and recombine
 
 This process usually leaves artifacts, which detection systems might look for.</small>
 
 <center><img src="images/process.png" width=100%/></center>
+
+---
+
+# Facial Forgery Methods
+<br>
+Two categories of forgeries are identified at the time of publication:
+<br><br>
+- Expression Manipulations
+- Identity Manipulations
 
 ---
 
@@ -121,18 +130,19 @@ The transfer relies on an iterative least squares to smooth the recomputed face.
 ]
 <center><img src="images/face2face.png" width = "90%"/></center>
 .font50[
-**Note**: The mouth is not parametrized but pulled from a database created from the target video. The mouth is composed over the resulting transfer, and the interior of the mouth is completede with a kNN between the source and database.
+**Note**: The mouth is not parametrized but pulled from a database created from the target video. The mouth is composed over the resulting transfer, and completed with a kNN to match source and target (especially for the interior).
 ]
 
 ---
 
 # Neural Textures
 
+.font90[
 Neural Textures is an **extension of Face2Face** to track and generate facial features. 
-<br/><br/>
-The learning approach revolves around using **Generative Adversarial Network** to compute the mouth area.
-<br/><br/>
-**Goal**: Reduces the computational complexity of relying on a database
+<br/><br/><br/>
+The learning approach revolves around using **Generative Adversarial Network** to compute the mouth area. **Goal**: to reduce the computational complexity of relying on a database
+]
+
 ---
 
 # Identity Manipulation
@@ -210,7 +220,9 @@ class: center, middle, title-slide
 
 # The FaceForensics++ Dataset
 
-<small><center>An order of magnitude larger than previous ones.</center>
+<small>An order of magnitude larger than previous ones: 
+
+> **5000+ videos of 270+ image frame each in 3 different compression format**
 
 | Source | <div style="width:200px"># of videos</div> | <div style="width:200px">Compression</div> |
 | ----------------: | ----: | ----------: | 
@@ -228,7 +240,7 @@ class: center, middle, title-slide
 
 ---
 
-# The FaceForensics++ Dataset
+# An Expanding Dataset
 
 .font70[
 Since the inception of the paper, the dataset was updated twice to include:
@@ -309,18 +321,20 @@ The lower the video quality, the lower the performance.
 
 - <u>Methods:</u> **Cozzolino**, steganographic features + CNN; **Bayar and Stamm**, CNN followed by three FC layers; **Rahmouni**, CNN with a focus on extracting features via global pooling; **MesoNet**, InceptionNet architecture
 
+- Humans perform with an average accuracy between 68.7% and 58.7%
+
 ]
 
 ---
 
 # Current Benchmark Leaderboard
 
-.font80[Key points:
-- The benchmark was not updated with the new data.
-- Performances have greatly increased in a few years.
+.font80[Performance has greatly increased in a few years.
 ]
 
 <center><img src="images/benchmark.png" width = "100%"/></center>
+
+<center><img src="images/repo.png" width = "60%"/></center>
 
 ---
 
@@ -332,10 +346,11 @@ The lower the video quality, the lower the performance.
 
 - The dataset will have to be replaced or expanded with newer, better methods (no update since 2020)
 
-- The Benchmark has nearly been perfected and will likely need an update as well
+- The Benchmark has nearly been perfected and will likely need an update as well (not yet updated with DFD or FaceShifter)
 
 - The paper does not provide their training code to verify the Xception performance, the benchmark does not need to disclose the used architecture's code. The milieu is a bit opaque from an industry perspective.
 
+- Performance relies on face isolation as whole-image classification is poorly handled still
 ]
 
 ---
